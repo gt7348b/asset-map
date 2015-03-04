@@ -1,10 +1,10 @@
 // images
 
-var historicalMapLayer = L.imageOverlay('data/1949.png', 
+var historicalMapLayer = L.imageOverlay('data/1949.png',
   [[33.74123662962249, -84.39920425415039],[33.758035496175616,-84.37899112701415]],
   {opacity: 0.9});
 
-var neighborhoodProfileLayer = L.imageOverlay('data/neighborhood-profile.png', 
+var neighborhoodProfileLayer = L.imageOverlay('data/neighborhood-profile.png',
   [[33.743383923408516, -84.40467596054077],[33.7700260223456,-84.36972141265869]],
   {opacity: 0.9});
 
@@ -20,10 +20,10 @@ var CLIENT_ID = 'EJAXVB3GXRY550WSHRBEVAHYKIKGHW0YXHQIVJVMMF3OLQID'
 var CLIENT_SECRET = 'OPOIMXAYAEIDLPH1E1GB2HDF4UKJVATA25R2LJVCFQX4GOZK'
 
 var API_ENDPOINT = 'https://api.foursquare.com/v2/venues/search' +
-  '?client_id=CLIENT_ID' + 
+  '?client_id=CLIENT_ID' +
   '&client_secret=CLIENT_SECRET' +
   '&v=20130815' +
-  '&ll=33.74986,-84.39223' + 
+  '&ll=33.74986,-84.39223' +
   '&radius=889' +
   '&limit=50' +
   '&intent=browse' +
@@ -228,6 +228,19 @@ var communityAssetsLayer = L.geoJson(communityAssets, {
   }
 });
 
+//Bus stops
+var BusstopLayer = L.shapefile('data/SD_BusStops.zip', {
+  onEachFeature: function(feature, layer) {layer.bindPopup(feature.properties.Description)},
+  pointToLayer: function(feature, latlng) {
+    return L.marker(latlng, {icon: L.AwesomeMarkers.icon({
+      icon: 'subway',
+      prefix: 'fa',
+      markerColor: 'orange'
+    })
+  });
+}
+});
+
 var vacantLayer = L.geoJson(vacant, {
   onEachFeature: function(feature, layer) {
     layer.bindPopup(feature.properties.CommonName + "<br>" + feature.properties.Category + "<br>" + feature.properties.SalePrice)},
@@ -241,6 +254,8 @@ var vacantLayer = L.geoJson(vacant, {
   }
 });
 
+//
+
 // colors: 'red', 'darkred', 'orange', 'green', 'darkgreen', 'blue', 'purple', 'darkpuple', 'cadetblue'
 
 
@@ -248,14 +263,14 @@ var vacantLayer = L.geoJson(vacant, {
 
 var map = L.map('map', {
   attributionControl: false,
-  center: new L.LatLng(33.75, -84.392), 
+  center: new L.LatLng(33.75, -84.392),
   zoom: 15,
   layers: [southDowntownLayer, MARTALayer, historicalMarkersLayer, landmarksLayer, artLayer, communityAssetsLayer, vacantLayer, parcelLayer, governmentBuildingsLayer, entertainmentLayer, residentialLayer, foodLayer, censusBlocksLayer]
 });
 L.control.attribution({position: 'bottomleft'}).addTo(map);
 
 L.tileLayer('http://otile4.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png', {
-  attribution: 
+  attribution:
   'Made at <a href="http://www.codeforamerica.org/events/codeacross-2015/">CodeAcross</a> for <a href="http://www.codeforatlanta.org/"><img src="images/code-for-atlanta.png" height=70></a>' +
   '<br>Tiles &copy; <a href="http://www.mapquest.com/" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png" />',
   maxZoom: 18
@@ -281,4 +296,3 @@ var overlayMaps = {
 L.control.layers(null, overlayMaps, {
   collapsed: false
 }).addTo(map);
-
