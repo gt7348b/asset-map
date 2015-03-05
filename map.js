@@ -159,6 +159,14 @@ var censusBlocksLayer = L.shapefile('data/census-blocks.zip', {
   }
 });
 
+// var busStops = L.shapefile('data/SD_BusStops.zip', {
+//   onEachFeature: function(feature, layer){
+//       var stop = layer.bindPopup('Bus Stop ' + feature.properties.stop_name);
+//   },
+//   style: {color: '#fb0'
+//   }
+// })
+
 
 // standard layers
 
@@ -173,6 +181,7 @@ var southDowntownLayer = L.geoJson(southDowntown, {
 var MARTALayer = L.geoJson(marta, {
   onEachFeature: function(feature, layer) {layer.bindPopup(feature.properties.Description)},
   pointToLayer: function(feature, latlng) {
+    console.log(latlng)
     return L.marker(latlng, {icon: L.AwesomeMarkers.icon({
       icon: 'subway',
       prefix: 'fa',
@@ -228,18 +237,6 @@ var communityAssetsLayer = L.geoJson(communityAssets, {
   }
 });
 
-//Bus stops
-var BusstopLayer = L.shapefile('data/SD_BusStops.zip', {
-  onEachFeature: function(feature, layer) {layer.bindPopup(feature.properties.Description)},
-  pointToLayer: function(feature, latlng) {
-    return L.marker(latlng, {icon: L.AwesomeMarkers.icon({
-      icon: 'subway',
-      prefix: 'fa',
-      markerColor: 'orange'
-    })
-  });
-}
-});
 
 var vacantLayer = L.geoJson(vacant, {
   onEachFeature: function(feature, layer) {
